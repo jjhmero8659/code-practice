@@ -26,9 +26,6 @@ public class Solution_3020 {
             }
         }
 
-//        Arrays.sort(s);
-//        Arrays.sort(j);
-
         int[] ss = new int[h+1]; //석순 합 배열
         int[] sj = new int[h+1]; //종유석 합배열
 
@@ -41,15 +38,15 @@ public class Solution_3020 {
         int duplicateArea = 0; //동일한 충돌 횟수를 가진 영역
         
         for (int i=1; i<=h; i++){ //1구간 부터 높이 h 구간 까지 개똥벌레의 모든 비행의 수
-            int crashS = ss[i];
-            int crashJ = sj[h] - sj[i];
+            int crashS = ss[h] - ss[i-1]; // 석순 부딪히는 장애물 계산
+            int crashJ = sj[h] - sj[h-i]; // 종유석 부딪히는 장애물 계산
 
-            if((crashS + crashJ) < minBlock){
+            if((crashS + crashJ) < minBlock){ //더 적은 충돌 횟수 발견 swap
                 minBlock = crashS + crashJ;
                 duplicateArea = 1;
             }
             else if((crashS + crashJ) == minBlock){
-                duplicateArea++;
+                duplicateArea++; //동일한 최소값 보유
             }
         }
 
