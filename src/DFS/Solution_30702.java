@@ -1,16 +1,19 @@
 package DFS;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 
 public class Solution_30702 {
-    static int R, C;
-    static int[][] farm; //농장
+    static int N, M;
+    static char[][] flagA; //
+    static char[][] flagB; //
     static boolean[][] visited;
-    static int[] dx = {0, 1, 1, 1, 0, -1, -1, -1}; //동 동남 남 남서 서 서북 북 북동 x
-    static int[] dy = {1, 1, 0, -1, -1, -1, 0, 1}; //동 동남 남 남서 서 서북 북 북동 y
-    static int island = 0;
+    static int[] dx = {0, 1, 0, -1}; //동 남 서 북 x
+    static int[] dy = {1, 0, -1, 0}; //동 남 서 북 y
 
 
     public static void main(String[] args) throws IOException {
@@ -19,51 +22,49 @@ public class Solution_30702 {
 
         StringTokenizer stL = new StringTokenizer(br.readLine(), " ");
 
-        R = Integer.parseInt(stL.nextToken());
-        C = Integer.parseInt(stL.nextToken());
+        N = Integer.parseInt(stL.nextToken());
+        M = Integer.parseInt(stL.nextToken());
 
-        farm = new int[R][C];
-        visited = new boolean[R][C];
+        flagA = new char[N][M];
+        flagB = new char[N][M];
 
-        for (int i = 0; i < R; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 0; j < C; j++) {
-                farm[i][j] = Integer.parseInt(st.nextToken());
+
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < M; j++) {
+                flagA[i][j] = line.charAt(j);
             }
         }
 
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                if (visited[i][j] == false && farm[i][j] != 0) {
-                    island++;
-                    dfs(i, j);
-                }
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < M; j++) {
+                flagB[i][j] = line.charAt(j);
             }
         }
 
 
-        bw.write(island + "\n");
+
+
+//        for (int i = 0; i < N; i++) {
+//            String line = br.readLine();
+//            for (int j = 0; j < M; j++) {
+//                char data = line.charAt(j);
+//                flagBS.add(data);
+//                flagB[i][j] = data;
+//            }
+//        }
+
+
+
+
+        bw.write("\n");
         bw.flush();
         bw.close();
     }
 
-    static void dfs(int x, int y) {
+    static void dfs(int x, int y, int t) {
 
-        visited[x][y] = true;
-
-
-        for (int i = 0; i < 8; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (0 <= nx && nx < R && 0 <= ny && ny < C) {
-                if (visited[nx][ny] == false && farm[nx][ny] != 0) {
-                    //다음 영역이 방문하지 않았고 섬 영역이라면
-                    //0은 질 좋은 잔디 영역임
-                    dfs(nx, ny);
-                }
-            }
-        }
 
     }
 
