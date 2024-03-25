@@ -1,71 +1,41 @@
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 
 public class test {
-    static int N, D, K, C;
-    static int[] sushiTable;
-    static int[] sushi;
-    static int ans = 0;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static long a,b;
+    static int cnt;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        D = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        C = Integer.parseInt(st.nextToken());
+    static int bfs(){
+        Queue<Long> q = new LinkedList<>();
+        q.add(a);
 
-        sushiTable = new int[N];
-        for (int i = 0; i < N; i++) {
-            sushiTable[i] = Integer.parseInt(br.readLine());
+        while(!q.isEmpty()){
+            int size = q.size();
+
+            for(int i=0; i<size; i++){
+                long tmp = q.poll();
+                if(tmp==b)
+                    return cnt+1;
+
+                if(tmp*2<=b) q.add(tmp*2);
+                if(tmp*10+1<=b) q.add(tmp*10+1);
+            }
+            cnt++;
         }
-        sushi = new int[D+1];
-        System.out.println(check());
+        return -1;
     }
-    private static int check() {
-        int count = 0;
-        int max = 0;
-        for (int i = 0; i < K; i++) {
-            int a = sushiTable[i];
 
-            if(sushi[a]==0) {
-                count++;
-            }
-            sushi[a]++;
-        }
-        max = count;
+    public static void main(String args[]) throws IOException {
+        BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stk = new StringTokenizer(bfr.readLine());
 
+        a = Long.parseLong(stk.nextToken());
+        b = Long.parseLong(stk.nextToken());
 
-        for(int i=0;i<N-1;i++) {
-            // 최댓값 판별
-            if(count >= max) {
-                // 추가로 먹은 초밥이 현재까지 먹은 초밥에 포함되어 있지 않은 경우
-                if(sushi[C]==0) {
-                    max = count+1;
-                }
-                // 추가로 먹은 초밥이 이미 포함되어 있는 경우
-                else {
-                    max = count;
-                }
-            }
-
-            // 첫 번째 요소 빼기
-            sushi[sushiTable[i]]--;
-            // 첫 번째 요소와 중복되는 요소가 없다면 count-1
-            if(sushi[sushiTable[i]]==0)
-                count--;
-
-            // 마지막 요소 추가 전 중복되는 요소가 있는지 확인(중복x -> count+1)
-            if(sushi[sushiTable[(i+K)%N]]==0)
-                count++;
-            //  마지막 요소 추가
-            sushi[sushiTable[(i+K)%N]]++;
-
-        }
-
-        return max;
-
+        System.out.println(bfs());
     }
 
 }
