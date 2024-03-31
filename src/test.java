@@ -1,58 +1,45 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.function.Function;
 
 
 public class test {
-    private static final int SIZE = 500;
+    static ArrayList<Integer> list;
+    static boolean[] visited;
+    static int[] num;
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Function<String, Integer> stoi = Integer::parseInt;
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int x = stoi.apply(st.nextToken()) + SIZE;
-        int y = stoi.apply(st.nextToken()) + SIZE;
-        int n = stoi.apply(st.nextToken());
-        boolean[][] isBlock = new boolean[2 * SIZE + 1][2 * SIZE + 1];
-        for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = stoi.apply(st.nextToken()) + SIZE;
-            int b = stoi.apply(st.nextToken()) + SIZE;
-            isBlock[b][a] = true;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        //n개의 정수를 입력받는다.
+        int n = scan.nextInt();
+        num = new int[n + 1];
+        for(int i = 1; i <= n; i++) {
+            num[i] = scan.nextInt();
         }
-        int result = cal(y, x, isBlock);
-        System.out.println(result);
+
+        //순서대로 사이클이 발생하는지 dfs로 확인한다.
+        list = new ArrayList<>();
+        visited = new boolean[n + 1];
+        for(int i = 1; i <= n; i++) {
+            visited[i] = true;
+            dfs(i, i);
+            visited[i] = false;
+        }
+
+        Collections.sort(list); //작은 수 부터 출력하므로 정렬한다.
+        System.out.println(list.size());
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
     }
 
-    private static final int[] DY = {-1, 0, 1, 0};
-    private static final int[] DX = {0, 1, 0, -1};
-
-    private static int cal(int y, int x, boolean[][] isBlock) {
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{SIZE, SIZE});
-        int time = 0;
-        boolean[][] visited = new boolean[2*SIZE+1][2*SIZE+1];
-        while (!q.isEmpty()) {
-            int size = q.size();
-            for (int s = 0; s < size; s++) {
-                int[] now = q.poll();
-                if (now[0] == y && now[1] == x) {
-                    return time;
-                }
-                for (int i = 0; i < 4; i++) {
-                    int ny = now[0] + DY[i];
-                    int nx = now[1] + DX[i];
-                    if(ny >= 0 && ny <= 2*SIZE && nx >= 0 && nx <= 2*SIZE && !isBlock[ny][nx] && !visited[ny][nx]){
-                        visited[ny][nx] = true;
-                        q.offer(new int[]{ny,nx});
-                    }
-                }
-            }
-            time++;
+    public static void dfs(int start, int target) {
+        if(visited[num[start]] == false) {
+            visited[num[start]] = true;
+            dfs(num[start], target);
+            visited[num[start]] = false;
         }
-        return -1;
+        if(num[start] == target) list.add(target); //사이클 발생시 해당 숫자를 list에 담아준다.
     }
 }
