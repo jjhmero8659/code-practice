@@ -2,18 +2,17 @@ package DFS;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
 
-public class Solution_24483 {
+public class Solution_24484 {
     static int N, M, R;
-    static ArrayList<Integer>[] tree;
-    static int[] visited;
-
-    static int[] depth;
-    static int visitN = 0;
+    static ArrayList<Integer>[] nodes;
+    static long[] visited;
+    static long[] depth;
+    static long result = 0;
+    static long visitN = 1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,14 +24,16 @@ public class Solution_24483 {
         M = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
 
-        tree = new ArrayList[N + 1];
-        visited = new int[N + 1];
-        depth = new int[N+1];
-
-        Arrays.fill(depth, -1);
+        nodes = new ArrayList[N+1];
+        visited = new long[N + 1];
+        depth = new long[N + 1];
 
         for (int i = 1; i <= N; i++) {
-            tree[i] = new ArrayList<>();
+            nodes[i] = new ArrayList<>();
+        }
+
+        for (int i=1; i<=N; i++){
+            depth[i] = -1; //default 깊이 값은 -1
         }
 
         for (int i = 0; i < M; i++) {
@@ -41,19 +42,17 @@ public class Solution_24483 {
             int pN = Integer.parseInt(stL.nextToken());
             int cN = Integer.parseInt(stL.nextToken());
 
-            tree[pN].add(cN); // 양방향 연결
-            tree[cN].add(pN);
+            nodes[pN].add(cN); // 양방향 연결
+            nodes[cN].add(pN);
         }
 
-        for (int i = 1; i <= N; i++) {
-            Collections.sort(tree[i]); //오름 차순 정렬
+        for (int i=1; i<=N; i++){
+            Collections.sort(nodes[i], Collections.reverseOrder());
         }
+        
+        dfs(R,0);
 
-        dfs(R, 0);
-
-        long result = 0;
-
-        for (int i = 1; i <= N; i++) {
+        for (int i=1; i<=N; i++){
             long di = depth[i];
             long vi = visited[i];
 
@@ -65,13 +64,13 @@ public class Solution_24483 {
         bw.close();
     }
 
-    static void dfs(int n, int d) { //노드 숫자 , 깊이 d , 방문순서 v
-        visited[n] = ++visitN; //방문 순서 대입
+    static void dfs(int n , int d){ //노드 숫자 , 깊이 d , 방문순서 v
+        visited[n] = visitN++; //방문 순서 대입
         depth[n] = d; //깊이 값 대입
 
-        for (int node : tree[n]) {
-            if (visited[node] == 0) {
-                dfs(node, d + 1); //깊이, 방문 순서 증가
+        for (int node : nodes[n]){
+            if (visited[node] == 0){
+                dfs(node,d+1); //깊이, 방문 순서 증가
             }
         }
     }
