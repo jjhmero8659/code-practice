@@ -1,10 +1,7 @@
 package BFS;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 public class Solution_16236 {
@@ -12,8 +9,8 @@ public class Solution_16236 {
     static int[][] map;
     static long fish = 0;
     static Shark start;
-    static int[] dx = {-1, 0, 1, 0}; //북 서 남 동 반시계
-    static int[] dy = {0, -1, 0, 1}; //북 서 남 동 반시계
+    static int[] dx = {-1, 0, 0, 1}; //북 서 동 남
+    static int[] dy = {0, -1, 1, 0}; //북 서 동 남
 
     static class Shark {
         int x;
@@ -69,7 +66,15 @@ public class Solution_16236 {
     }
 
     static Shark bfs(Shark start) {
-        Queue<Shark> q = new LinkedList<>();
+        PriorityQueue<Shark> q = new PriorityQueue<>((a, b) ->
+                a.d != b.d ?
+                        Long.compare(a.d,b.d) :  // distance 가 다르다면 오름차순 반환 (true)
+                        (a.x != b.x ? //distance 가 같다면 x좌표 비교
+                                Integer.compare(a.x,b.x) : //x좌표 다르다면 x좌표 오름차순 반환
+                                Integer.compare(a.y,b.y) //x 좌표가 같다면 y좌표 오름차순 반환
+                        )
+        );
+
         q.offer(start);
         map[start.x][start.y] = 0; //처음 시작 위치는 빈공간으로 변경
 
