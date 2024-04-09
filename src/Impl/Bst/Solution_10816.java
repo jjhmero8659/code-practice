@@ -1,4 +1,4 @@
-package Impl;
+package Impl.Bst;
 
 import java.io.*;
 import java.util.ArrayList;
