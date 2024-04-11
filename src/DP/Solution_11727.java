@@ -15,10 +15,12 @@ public class Solution_11727 {
 
         dp = new long[N + 1];
 
-        dp[1] = 1;
-        dp[2] = 3;
-
-        for (int i=3; i<=N; i++){
+        for (int i=1; i<=N; i++){
+            if(i == 1){
+                dp[i] = 1;
+            } else if (i == 2) {
+                dp[i] = 3;
+            }
             dp[i] = (dp[i-1] + (2 * dp[i-2])) % 10007;
         }
 
