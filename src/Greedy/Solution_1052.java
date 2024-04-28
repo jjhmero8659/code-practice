@@ -30,11 +30,11 @@ public class Solution_1052 {
             long tNum = Long.parseLong(tString,2);
 
             if (tNum != 0){
-                buyBottleN = Math.pow(2,bitN.length() - )
+                buyBottleN = (long)(Math.pow(2,bitN.length() - index) - tNum);
             }
         }
 
-
+        bw.write(buyBottleN + "\n");
         bw.flush();
         bw.close();
     }
