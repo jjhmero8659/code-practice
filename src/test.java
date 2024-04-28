@@ -4,58 +4,40 @@ import java.util.function.Function;
 
 
 public class test {
-    static int M, N;
-
-    static int[][] map;
-    static int[][] dp;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        M = Integer.parseInt(st.nextToken()); // 세로
-        N = Integer.parseInt(st.nextToken()); // 가로
-
-        map = new int[M][N];
-        dp = new int[M][N];
-
-        for (int i=0; i<M; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j=0; j<N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-                dp[i][j] = -1; // dp 초기화
-            }
-        }
-
-        int dfs = dfs(0, 0);
-
-        System.out.println(
-
-        ); // 출발 지점
-    }
-
-    public static int dfs(int x, int y) {
-        // 도착지점까지 도달했을 경우
-        if (x == M-1 && y == N-1)
-            return 1;
-
-        // 방문한 적이 없는 경우
-        if (dp[x][y] == -1) {
-            dp[x][y] = 0;
-            for (int i=0; i<4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx < 0 || nx > M-1 || ny < 0 || ny > N-1) continue;
-
-                // 내리막 길인 경우
-                if (map[x][y] > map[nx][ny]) {
-                    dp[x][y] += dfs(nx, ny);
+        //결과값 출력하는 BufferedWriter
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        int answer = 0, index = -1;
+        String bitN = Integer.toBinaryString(N);	//N ▶ 2진
+        int ones = Integer.bitCount(N);	//2진수 1의 개수
+        if(ones > K){	//1의 개수 > K 일 때
+            //K번째 '1'을 기준으로 만들어야 하는 형태의 위치 구하기
+            for (int i = 0; i < bitN.length(); i++) {
+                if (K == 0) {
+                    index = i;
+                    break;
                 }
+                if (bitN.charAt(i) == '1')
+                    K--;
             }
+            String temp = bitN.substring(index);	//바꿔야 하는 값
+            int t = Integer.parseInt(temp, 2);	//바꿔야 하는 값의 10진수 값
+            /*
+            바꿔야 하는 값이 0이 아닐 때
+            Math.pow(2, bitN.length() - index) : 만들어야 하는 형태의 10진수 값
+            t : 바꿔야 하는 값에 10진수 값
+            Math.pow(2, bitN.length() - index) - t : 물병을 사야하는 개수
+            */
+            if (t != 0)
+                answer = (int) (Math.pow(2, bitN.length() - index) - t);
         }
-        return dp[x][y];
+        bw.write(answer + "");		//물병 구매 개수 BufferedWriter 저장
+        bw.flush();		//결과 출력
+        bw.close();
+        br.close();
     }
 }
