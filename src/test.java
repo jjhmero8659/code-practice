@@ -9,7 +9,7 @@ public class test {
     static int[] dy = {1, -1, 0, 0};
     static double[] percent = new double[4];
     static boolean[][] visited = new boolean[30][30];
-    static double resultPercent = 0;
+    static double resultPercent = 0; //
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
