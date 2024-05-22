@@ -1,6 +1,7 @@
 package FloydWarshall;
 
 import java.io.*;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 
@@ -70,6 +71,27 @@ public class Solution_11780 {
                 }
                 else{
                     bw.write(distance[i][j] + " ");
+                }
+            }
+        }
+
+        for (int i=1; i<=N; i++){
+            for (int j=1; j<=N; j++){
+                if (i == j){
+                    bw.write("0\n");
+                }
+                else{
+                    // 자기 자신 or INF 가 아닌 경로가 있는 경우
+                    Stack<Integer> stack = new Stack<>();
+
+                    //j 는 최종 도착 점임
+                    int prevN = j;
+
+                    stack.push(prevN); //마지막에 꺼낼 데이터는 최종 도착 점 j
+
+                    while (i != prev[i][prevN]){
+                        prevN = prev[i][prevN]; //이전 노드, 정점 갱신
+                    }
                 }
             }
         }
