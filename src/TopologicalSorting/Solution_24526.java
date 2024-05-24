@@ -29,7 +29,7 @@ public class Solution_24526 {
 
         inDegree = new int[N+1];
 
-        for (int i=1; i<=N; i++){
+        for (int i=1; i<=M; i++){
             StringTokenizer stD = new StringTokenizer(br.readLine()," ");
             int s = Integer.parseInt(stD.nextToken());
             int e = Integer.parseInt(stD.nextToken());
@@ -37,7 +37,6 @@ public class Solution_24526 {
             relation[e].add(s);
             inDegree[s]++;
         }
-
 
         bw.write(topologicalSort() + "\n");
         bw.flush();
@@ -48,20 +47,22 @@ public class Solution_24526 {
     static int topologicalSort(){
         Queue<Integer> q = new LinkedList<>();
         for (int i=1; i<=N; i++){
-            if (inDegree[i] != 0){
+            if (inDegree[i] == 0){
                 q.offer(i);
             }
         }
 
         int ans = q.size();
 
-        while (!q.isEmpty()){
-            Integer now = q.poll();
 
-            for (int next : relation[now]){
+        while (!q.isEmpty()){
+            Integer cur = q.peek();
+            q.poll();
+
+            for (int next : relation[cur]){
                 inDegree[next]--;
 
-                if (inDegree[next] != 0){
+                if (inDegree[next] == 0){
                     q.offer(next);
                     ans++;
                 }
