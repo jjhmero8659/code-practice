@@ -95,8 +95,8 @@ public class Solution_21940 {
         for (int k=1; k<=N; k++){
             for (int i=1; i<=N; i++){
                 for (int j=1; j<=N; j++){
-                    if (distance[i][j] > distance[i][k] + distance[k][j]){
-                        distance[i][j] = distance[i][k] + distance[k][j];
+                    if (distance[i][k] > distance[i][k] + distance[k][j]){
+                        distance[i][k] = distance[i][k] + distance[k][j];
                     }
                 }
             }
