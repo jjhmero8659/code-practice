@@ -9,7 +9,6 @@ import java.util.StringTokenizer;
 public class Solution_18223 {
     static int N, M, F;
     static ArrayList<Node>[] graphs;
-    static int[] distance;
     static final int INF = 987654321;
 
     static class Node {
@@ -33,11 +32,12 @@ public class Solution_18223 {
         F = Integer.parseInt(st.nextToken()); //건우 의 위치
 
         graphs = new ArrayList[N + 1];
-        distance = new int[N + 1];
 
         for (int i=1; i<=N; i++){
             graphs[i] = new ArrayList<>();
         }
+
+
 
         for (int i=0; i<M; i++){
             StringTokenizer stD = new StringTokenizer(br.readLine()," ");
@@ -50,9 +50,48 @@ public class Solution_18223 {
             graphs[e].add(new Node(s,v));
         }
 
+        int[] minjunD = dijkstra(1);
+        int[] gunwooD = dijkstra(F);
+
+        if (minjunD[N] == minjunD[F] + gunwooD[N]){
+            bw.write("SAVE HIM");
+        }
+        else{
+            bw.write("GOOD BYE");
+        }
 
         bw.flush();
         bw.close();
+    }
+
+    static int[] dijkstra(int index){
+        PriorityQueue<Node> pq = new PriorityQueue<>(
+                (a,b) -> Integer.compare(a.cost,b.cost)
+        );
+
+        int[] distance = new int[N + 1];
+
+
+        for (int i=1; i<=N; i++){
+            distance[i] = INF;
+        }
+
+        distance[index] = 0;
+
+        pq.offer(new Node(index,0));
+
+        while (!pq.isEmpty()){
+            Node now = pq.poll();
+
+            for (Node next : graphs[now.num]){
+                if (distance[next.num] > distance[now.num] + next.cost){
+                    distance[next.num] = distance[now.num] + next.cost;
+                    pq.offer(new Node(next.num , distance[next.num]));
+                }
+            }
+        }
+
+        return distance;
     }
 
 
