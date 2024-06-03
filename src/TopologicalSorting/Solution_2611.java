@@ -23,8 +23,6 @@ public class Solution_2611 {
     }
 
     public static void main(String[] args) throws IOException {
-
-
         N = Integer.parseInt(br.readLine()); //정점 수
         M = Integer.parseInt(br.readLine()); //간선 수
 
