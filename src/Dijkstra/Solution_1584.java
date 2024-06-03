@@ -107,12 +107,10 @@ public class Solution_1584 {
                     continue;
                 }
 
-                if (visited[nx][ny] == false && map[nx][ny] != DEATH){
-
+                if (visited[nx][ny] == false && map[nx][ny] != DEATH) {
                     visited[nx][ny] = true;
                     distance[nx][ny] = distance[now.x][now.y] + map[nx][ny];
-                    pq.offer(new Point(nx,ny,distance[nx][ny]));
-
+                    pq.offer(new Point(nx, ny, distance[nx][ny]));
                 }
             }
         }
