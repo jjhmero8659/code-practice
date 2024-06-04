@@ -4,12 +4,11 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 
-public class Solution_15650 {
+public class Solution_15652 {
     static int N, M;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
-    static boolean[] visited;
     static int[] arr;
 
     public static void main(String[] args) throws IOException {
@@ -18,10 +17,9 @@ public class Solution_15650 {
         N = Integer.parseInt(st.nextToken()); //숫자 N
         M = Integer.parseInt(st.nextToken()); //수열 길이
 
-        visited = new boolean[N + 1];
         arr = new int[M + 1];
 
-        backTracking(1,1);
+        backTracking(1, 1);
 
         bw.write(sb.toString() + " ");
 
@@ -30,22 +28,18 @@ public class Solution_15650 {
         bw.close();
     }
 
-    static void backTracking(int start , int depth) {
-        if (depth == M + 1){
-            for (int i=1; i<=M; i++){
+    static void backTracking(int start, int depth) {
+        if (depth == M + 1) {
+            for (int i = 1; i <= M; i++) {
                 sb.append(arr[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
 
-        for (int i = start; i<=N; i++){
-            if (visited[i] == false){
-                visited[i] = true;
-                arr[depth] = i;
-                backTracking(i + 1, depth + 1);
-                visited[i] = false;
-            }
+        for (int i = start; i <= N; i++) {
+            arr[depth] = i;
+            backTracking(i, depth + 1);
         }
     }
 }
