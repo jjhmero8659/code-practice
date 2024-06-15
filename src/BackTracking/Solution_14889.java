@@ -9,13 +9,13 @@ public class Solution_14889 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
-    static int[] start, link;
+    static boolean[] arr;
     static int[][] status;
     static boolean[] visited;
 
-    public static void main(String[] args) throws IOException {
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+    static int MIN_RESULT = Integer.MAX_VALUE;
 
+    public static void main(String[] args) throws IOException {
         N = Integer.parseInt(br.readLine()); //숫자 N
 
         status = new int[N + 1][N + 1];
@@ -26,47 +26,50 @@ public class Solution_14889 {
             }
         }
 
-        start = new int[N / 2];
-        link = new int[N / 2];
+        arr = new boolean[N + 1];
 
         visited = new boolean[N + 1];
 
-        backTracking(0);
+        backTracking(0, 1);
 
-        bw.write(sb.toString() + " ");
+        bw.write(MIN_RESULT + " ");
 
         bw.flush();
         br.close();
         bw.close();
     }
 
-    static void backTracking(int depth) {
-        int outOfBound = (N / 2);
-        if (depth == outOfBound) {
-            int startStat = 0;
-            for (int i = 0; i < outOfBound; i++) {
-                int t1 = start[i];
-                int t2 = start[i + 1];
-
-                startStat += status[t1][t2] + status[t2][t1];
-            }
-
-            for (int i = 1; i <= N; i++) {
-                if (visited[i] == false){
-                    link
-                }
-            }
+    static void backTracking(int depth, int start) {
+        if (depth == N / 2) {
+            MIN_RESULT = Math.min(MIN_RESULT, getResult());
             return;
         }
 
-        for (int i = 1; i <= N; i++) {
-            if (visited[i] == false) {
-                visited[i] = true;
-                start[depth] = i;
-                backTracking(depth + 1);
-                visited[i] = false;
-            }
-
+        for (int i = start; i <= N; i++) {
+            arr[i] = true;
+            backTracking(depth + 1, i + 1);
+            arr[i] = false;
         }
+    }
+
+    static int getResult() {
+        int start = 0;
+        int link = 0;
+
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                if (i == j) continue;
+
+                if (arr[i] && arr[j]) {
+                    start += status[i][j];
+                }
+
+                if (!arr[i] && !arr[j]) {
+                    link += status[i][j];
+                }
+            }
+        }
+
+        return Math.abs(start - link);
     }
 }
